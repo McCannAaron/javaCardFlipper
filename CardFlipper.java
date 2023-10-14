@@ -9,7 +9,6 @@ public class CardFlipper extends JFrame {
     private ArrayList<String> imagePaths;
     private ArrayList<String> cardImages;
     private JButton[] cardButtons;
-    private String option;
     private int numberOfMatches;
     private int firstCardIndex = -1;
     private int secondCardIndex;
@@ -20,22 +19,6 @@ public class CardFlipper extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         imagePaths = new ArrayList<>();
-        imagePaths.add("blue.png");
-        imagePaths.add("dark blue.png");
-        imagePaths.add("green.png");
-        imagePaths.add("orange.png");
-        imagePaths.add("pink.png");
-        imagePaths.add("purple.png");
-        imagePaths.add("red.png");
-        imagePaths.add("yellow.png");
-        imagePaths.add("blue.png");
-        imagePaths.add("dark blue.png");
-        imagePaths.add("green.png");
-        imagePaths.add("orange.png");
-        imagePaths.add("pink.png");
-        imagePaths.add("purple.png");
-        imagePaths.add("red.png");
-        imagePaths.add("yellow.png");
 
         cardImages = new ArrayList<>();
         for (String imagePath : imagePaths) {
@@ -45,23 +28,103 @@ public class CardFlipper extends JFrame {
         Collections.shuffle(imagePaths);
         Collections.shuffle(cardImages);
 
-        JPanel cardPanel = new JPanel(new GridLayout(4, 4));
-        cardButtons = new JButton[16];
+        String[] size = {"12", "24"};
+        int fieldSize = JOptionPane.showOptionDialog(null, "Press the size of the field you want: ",
+                "Color Memory Game", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.DEFAULT_OPTION, null,
+                size, size[1]);
 
-        for (int i = 0; i < cardButtons.length; i++) {
-            final int index = i;
-            cardButtons[i] = new JButton();
-            cardButtons[i].setIcon(new ImageIcon("silver.png"));
-            cardButtons[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    handleCardClick(index);
-                }
-            });
-            cardPanel.add(cardButtons[i]);
+        if (fieldSize == 0) {
+            imagePaths.add("blue.png");
+            imagePaths.add("dark blue.png");
+            imagePaths.add("green.png");
+            imagePaths.add("orange.png");
+            imagePaths.add("pink.png");
+            imagePaths.add("purple.png");
+            imagePaths.add("blue.png");
+            imagePaths.add("dark blue.png");
+            imagePaths.add("green.png");
+            imagePaths.add("orange.png");
+            imagePaths.add("pink.png");
+            imagePaths.add("purple.png");
+
+            for (String imagePath : imagePaths) {
+                cardImages.add("");
+            }
+
+            Collections.shuffle(imagePaths);
+            Collections.shuffle(cardImages);
+
+            JPanel cardPanel0 = new JPanel(new GridLayout(3, 4));
+            cardButtons = new JButton[12];
+
+            for (int i = 0; i < cardButtons.length; i++) {
+                final int index = i;
+                cardButtons[i] = new JButton();
+                cardButtons[i].setIcon(new ImageIcon("silver.png"));
+                cardButtons[i].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        handleCardClick(index);
+                    }
+                });
+                cardPanel0.add(cardButtons[i]);
+            }
+
+            add(cardPanel0);
+
+        } else if (fieldSize == 1) {
+            imagePaths.add("blue.png");
+            imagePaths.add("dark blue.png");
+            imagePaths.add("green.png");
+            imagePaths.add("orange.png");
+            imagePaths.add("pink.png");
+            imagePaths.add("purple.png");
+            imagePaths.add("red.png");
+            imagePaths.add("yellow.png");
+            imagePaths.add("gray.png");
+            imagePaths.add("light orange.png");
+            imagePaths.add("light green.png");
+            imagePaths.add("lavender.png");
+            imagePaths.add("blue.png");
+            imagePaths.add("dark blue.png");
+            imagePaths.add("green.png");
+            imagePaths.add("orange.png");
+            imagePaths.add("pink.png");
+            imagePaths.add("purple.png");
+            imagePaths.add("red.png");
+            imagePaths.add("yellow.png");
+            imagePaths.add("gray.png");
+            imagePaths.add("light orange.png");
+            imagePaths.add("light green.png");
+            imagePaths.add("lavender.png");
+
+            for (String imagePath : imagePaths) {
+                cardImages.add("");
+            }
+
+            Collections.shuffle(imagePaths);
+            Collections.shuffle(cardImages);
+
+            JPanel cardPanel1 = new JPanel(new GridLayout(4, 6));
+            cardButtons = new JButton[24];
+
+            for (int i = 0; i < cardButtons.length; i++) {
+                final int index = i;
+                cardButtons[i] = new JButton();
+                cardButtons[i].setIcon(new ImageIcon("silver.png"));
+                cardButtons[i].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        handleCardClick(index);
+                    }
+                });
+                cardPanel1.add(cardButtons[i]);
+            }
+
+            add(cardPanel1);
+
         }
 
-        add(cardPanel);
     }
 
     private void handleCardClick(int index) {
@@ -76,7 +139,7 @@ public class CardFlipper extends JFrame {
             secondCardIndex = index;
             cardButtons[secondCardIndex].setIcon(new ImageIcon(imagePaths.get(index)));
 
-            Timer timer = new Timer(5000, new ActionListener() {
+            Timer timer = new Timer(3000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (imagePaths.get(firstCardIndex).equals(imagePaths.get(secondCardIndex))) {
@@ -86,7 +149,7 @@ public class CardFlipper extends JFrame {
                         cardImages.set(secondCardIndex, null);
                         numberOfMatches++;
 
-                        if (numberOfMatches == imagePaths.size() / 2) {
+                        if (numberOfMatches == 6 | numberOfMatches == 12) {
                             JOptionPane.showMessageDialog(null, "Congrats");
                             System.exit(0);
                         }
@@ -97,6 +160,7 @@ public class CardFlipper extends JFrame {
                     firstCardIndex = -1;
                 }
             });
+            timer.start();
             timer.setRepeats(false);
         }
     }
