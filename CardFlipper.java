@@ -9,6 +9,8 @@ public class CardFlipper extends JFrame {
     private ArrayList<String> imagePaths;
     private ArrayList<String> cardImages;
     private JButton[] cardButtons;
+    private int fieldSize;
+    public int moves = 0;
     private int numberOfMatches;
     private int firstCardIndex = -1;
     private int secondCardIndex;
@@ -127,6 +129,10 @@ public class CardFlipper extends JFrame {
 
     }
 
+    private void movesMade(ActionEvent e) {
+        moves++;
+    }
+
     private void handleCardClick(int index) {
         if (cardButtons[index].getIcon() == null) {
             return;
@@ -148,14 +154,17 @@ public class CardFlipper extends JFrame {
                         cardImages.set(firstCardIndex, null);
                         cardImages.set(secondCardIndex, null);
                         numberOfMatches++;
+                        movesMade(e);
 
-                        if (numberOfMatches == 6 | numberOfMatches == 12) {
-                            JOptionPane.showMessageDialog(null, "Congrats");
+                        if ((fieldSize == 0 & numberOfMatches == 6) || (fieldSize == 1 && numberOfMatches == 12)) {
+                            JOptionPane.showMessageDialog(null, "Congrats! You completed the memory game!");
+                            JOptionPane.showMessageDialog(null, "You made " + moves + "!");
                             System.exit(0);
                         }
                     } else {
                         cardButtons[firstCardIndex].setIcon(new ImageIcon("silver.png"));
                         cardButtons[secondCardIndex].setIcon(new ImageIcon("silver.png"));
+                        movesMade(e);
                     }
                     firstCardIndex = -1;
                 }
