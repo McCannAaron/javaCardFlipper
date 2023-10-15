@@ -3,17 +3,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class CardFlipper extends JFrame {
     private ArrayList<String> imagePaths;
     private ArrayList<String> cardImages;
     private JButton[] cardButtons;
-    private int fieldSize;
     public int moves = 0;
     private int numberOfMatches;
     private int firstCardIndex = -1;
     private int secondCardIndex;
+    public String[] size = {"12", "24"};
+    int fieldSize = JOptionPane.showOptionDialog(null, "Press the size of the field you want: ",
+            "Color Memory Game", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.DEFAULT_OPTION, null,
+            size, size[1]);
     public long gameStart = System.currentTimeMillis();
 
     public CardFlipper() {
@@ -31,10 +35,6 @@ public class CardFlipper extends JFrame {
         Collections.shuffle(imagePaths);
         Collections.shuffle(cardImages);
 
-        String[] size = {"12", "24"};
-        int fieldSize = JOptionPane.showOptionDialog(null, "Press the size of the field you want: ",
-                "Color Memory Game", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.DEFAULT_OPTION, null,
-                size, size[1]);
 
         if (fieldSize == 0) {
             imagePaths.add("blue.png");
@@ -154,16 +154,29 @@ public class CardFlipper extends JFrame {
                         cardButtons[secondCardIndex].setIcon(null);
                         cardImages.set(firstCardIndex, null);
                         cardImages.set(secondCardIndex, null);
-                        numberOfMatches++;
-                        movesMade(e);
 
-                        if ((fieldSize == 0 & numberOfMatches == 6) || (fieldSize == 1 && numberOfMatches == 12)) {
-                            long gameEnd = System.currentTimeMillis();
-                            long gameTime = gameEnd - gameStart;
-                            double overallTime = gameTime / 1000.0;
-                            JOptionPane.showMessageDialog(null, "Congrats! You completed the memory game!");
-                            JOptionPane.showMessageDialog(null, "You made " + moves + " moves!\nTime elapsed: " + overallTime + " seconds.");
-                            System.exit(0);
+                        if (fieldSize == 0) {
+                            numberOfMatches++;
+                            movesMade(e);
+                            if (numberOfMatches == 6) {
+                                long gameEnd = System.currentTimeMillis();
+                                long gameTime = gameEnd - gameStart;
+                                double overallTime = gameTime / 1000.0;
+                                JOptionPane.showMessageDialog(null, "Congrats! You completed the " +
+                                        "memory game in " + overallTime + " seconds!\nYou made " + moves + " moves!");
+                                System.exit(0);
+                            }
+                        } else if (fieldSize == 1){
+                            numberOfMatches++;
+                            movesMade(e);
+                            if (numberOfMatches == 12) {
+                                long gameEnd = System.currentTimeMillis();
+                                long gameTime = gameEnd - gameStart;
+                                double overallTime = gameTime / 1000.0;
+                                JOptionPane.showMessageDialog(null, "Congrats! You completed the " +
+                                        "memory game in " + overallTime + " seconds!\nYou made " + moves + " moves!");
+                                System.exit(0);
+                            }
                         }
                     } else {
                         cardButtons[firstCardIndex].setIcon(new ImageIcon("silver.png"));
