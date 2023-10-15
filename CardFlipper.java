@@ -14,6 +14,7 @@ public class CardFlipper extends JFrame {
     private int numberOfMatches;
     private int firstCardIndex = -1;
     private int secondCardIndex;
+    public long gameStart = System.currentTimeMillis();
 
     public CardFlipper() {
         setTitle("Color Memory Game");
@@ -145,7 +146,7 @@ public class CardFlipper extends JFrame {
             secondCardIndex = index;
             cardButtons[secondCardIndex].setIcon(new ImageIcon(imagePaths.get(index)));
 
-            Timer timer = new Timer(3000, new ActionListener() {
+            Timer timer = new Timer(5000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (imagePaths.get(firstCardIndex).equals(imagePaths.get(secondCardIndex))) {
@@ -157,8 +158,11 @@ public class CardFlipper extends JFrame {
                         movesMade(e);
 
                         if ((fieldSize == 0 & numberOfMatches == 6) || (fieldSize == 1 && numberOfMatches == 12)) {
+                            long gameEnd = System.currentTimeMillis();
+                            long gameTime = gameEnd - gameStart;
+                            double overallTime = gameTime / 1000.0;
                             JOptionPane.showMessageDialog(null, "Congrats! You completed the memory game!");
-                            JOptionPane.showMessageDialog(null, "You made " + moves + "!");
+                            JOptionPane.showMessageDialog(null, "You made " + moves + " moves!\nTime elapsed: " + overallTime + " seconds.");
                             System.exit(0);
                         }
                     } else {
@@ -175,7 +179,6 @@ public class CardFlipper extends JFrame {
     }
 
     public static void main(String[] args) {
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
